@@ -852,7 +852,9 @@ bot.on('callback_query', async (callbackQuery) => {
 		if (changedPercentage_B) {
 			broadcastPercentageStrengthMessage('B', globalPercentage_B);
 		}
-
+	}
+	
+	if (allowChange) {
 		try {
 			await bot.answerCallbackQuery(callbackQueryId, { text: '操作成功!' });
 		} catch (error) {
@@ -862,8 +864,8 @@ bot.on('callback_query', async (callbackQuery) => {
 
 	if (allowUpdateMessage) {
 		if (data !== 'Refresh' && data in buttonTextMap) {
-			userActionList.unshift(`[${getDateTime()}] ${name} 点击了 ${buttonTextMap[data]}~`);
-			while (userActionList.length > 5) {
+			userActionList.unshift(`[${getDateTime(true)}] ${name} 点击了 ${buttonTextMap[data]}~`);
+			while (userActionList.length > 15) {
 				userActionList.pop();
 			}
 		}
