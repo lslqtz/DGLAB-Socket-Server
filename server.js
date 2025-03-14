@@ -11,7 +11,8 @@ process.env.TZ = 'Asia/Shanghai';
 var clients = {};
 var roomCount = {};
 var clientTimers = new Map()
-const punishmentDuration = 100;;
+const punishmentDuration = 100;
+const targetPulseTime = 2000;
 
 const forceSync = false;
 
@@ -22,7 +23,7 @@ const heartbeatMsg = {
 	message: '200'
 };
 var heartbeatTimer = -1;
-var heartbeatInterval = 10;
+const heartbeatInterval = 10;
 
 var broadcastPulseTimer_A = -1;
 var broadcastPulseTimer_B = -1;
@@ -416,6 +417,8 @@ function getPulseInfo(pulseData) {
 	pulseDataHexStr = pulseDataHexStr.slice(0, -1);
 	pulseDataHexStr += ']';
 	let pulseTime = (pulseCount * punishmentDuration);
+	let enlargerRatio = Math.ceil((targetPulseTime / pulseTime));
+	pulseTime *= enlargerRatio;
 	return { status: (pulseCount > 0), time: pulseTime, interval: pulseTime, hex: pulseDataHexStr };
 }
 function sendPulseMessage(channel, time, interval, pulseData, targetId, pulseInfo = null, forceUpdate = false) {
